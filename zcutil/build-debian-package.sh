@@ -42,6 +42,9 @@ cp $SRC_PATH/src/zcashd $DEB_BIN
 cp $SRC_PATH/src/zcash-cli $DEB_BIN
 cp $SRC_PATH/src/zcash-tx $DEB_BIN
 cp $SRC_PATH/src/zcash-addrgen $DEB_BIN
+cp $SRC_PATH/src/zcash-tx-nullifiers $DEB_BIN
+cp $SRC_PATH/src/zcash-tx-myvalue $DEB_BIN
+cp $SRC_PATH/src/zcash-getnull $DEB_BIN
 cp $SRC_PATH/zcutil/fetch-params.sh $DEB_BIN/zcash-fetch-params
 # Copy docs
 cp $SRC_PATH/doc/release-notes/release-notes-1.0.0.md $DEB_DOC/changelog
@@ -65,8 +68,8 @@ gzip --best -n $DEB_MAN/zcash-fetch-params.1
 cd $SRC_PATH/contrib
 
 # Create the control file
-strip $DEB_BIN/zcashd $DEB_BIN/zcash-cli $DEB_BIN/zcash-tx $DEB_BIN/zcash-addrgen
-dpkg-shlibdeps $DEB_BIN/zcashd $DEB_BIN/zcash-cli $DEB_BIN/zcash-tx $DEB_BIN/zcash-addrgen
+strip $DEB_BIN/zcashd $DEB_BIN/zcash-cli $DEB_BIN/zcash-tx $DEB_BIN/zcash-addrgen $DEB_BIN/zcash-tx-nullifiers $DEB_BIN/zcash-tx-myvalue $DEB_BIN/zcash-getnull
+dpkg-shlibdeps $DEB_BIN/zcashd $DEB_BIN/zcash-cli $DEB_BIN/zcash-tx $DEB_BIN/zcash-addrgen $DEB_BIN/zcash-tx-nullifiers $DEB_BIN/zcash-tx-myvalue $DEB_BIN/zcash-getnull
 dpkg-gencontrol -P$BUILD_DIR -v$DEBVERSION
 
 # Create the Debian package

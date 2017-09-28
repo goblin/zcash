@@ -75,7 +75,7 @@ if BUILD_BITCOIND
 endif
 
 if BUILD_BITCOIN_UTILS
-  bin_PROGRAMS += zcash-cli zcash-tx zcash-addrgen
+  bin_PROGRAMS += zcash-cli zcash-tx zcash-addrgen zcash-tx-nullifiers zcash-tx-myvalue zcash-getnull
 endif
 
 LIBZCASH_H = \
@@ -471,15 +471,57 @@ zcash_addrgen_CPPFLAGS = $(BITCOIN_INCLUDES)
 zcash_addrgen_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
 
 zcash_addrgen_LDADD = \
-  $(LIBUNIVALUE) \
   $(LIBBITCOIN_COMMON) \
   $(LIBBITCOIN_UTIL) \
   $(LIBSECP256K1) \
   $(LIBZCASH) \
   $(LIBBITCOIN_CRYPTO) \
-  $(LIBZCASH_LIBS)
+  $(LIBZCASH_LIBS) \
+  $(BOOST_LIBS) 
 
-zcash_addrgen_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+# zcash-tx-nullifiers
+zcash_tx_nullifiers_SOURCES = zcash-tx-nullifiers.cc hexline_reader.h
+zcash_tx_nullifiers_CPPFLAGS = $(BITCOIN_INCLUDES)
+zcash_tx_nullifiers_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+zcash_tx_nullifiers_LDADD = \
+  $(LIBBITCOIN_COMMON) \
+  $(LIBBITCOIN_UTIL) \
+  $(LIBSECP256K1) \
+  $(LIBZCASH) \
+  $(LIBBITCOIN_CRYPTO) \
+  $(LIBZCASH_LIBS) \
+  $(BOOST_LIBS)
+#
+
+# zcash-tx-myvalue
+zcash_tx_myvalue_SOURCES = zcash-tx-myvalue.cc hexline_reader.h
+zcash_tx_myvalue_CPPFLAGS = $(BITCOIN_INCLUDES)
+zcash_tx_myvalue_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+zcash_tx_myvalue_LDADD = \
+  $(LIBBITCOIN_COMMON) \
+  $(LIBBITCOIN_UTIL) \
+  $(LIBSECP256K1) \
+  $(LIBZCASH) \
+  $(LIBBITCOIN_CRYPTO) \
+  $(LIBZCASH_LIBS) \
+  $(BOOST_LIBS)
+#
+
+# zcash-getnull
+zcash_getnull_SOURCES = zcash-getnull.cc
+zcash_getnull_CPPFLAGS = $(BITCOIN_INCLUDES)
+zcash_getnull_LDFLAGS = $(RELDFLAGS) $(AM_LDFLAGS) $(LIBTOOL_APP_LDFLAGS)
+
+zcash_getnull_LDADD = \
+  $(LIBBITCOIN_COMMON) \
+  $(LIBBITCOIN_UTIL) \
+  $(LIBSECP256K1) \
+  $(LIBZCASH) \
+  $(LIBBITCOIN_CRYPTO) \
+  $(LIBZCASH_LIBS) \
+  $(BOOST_LIBS)
 #
 
 # zcash protocol primitives #

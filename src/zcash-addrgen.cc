@@ -3,10 +3,14 @@
 #include <string.h>
 
 #include <vector>
+#include <algorithm>
+#include <sstream>
+#include <iterator>
 
 #include "config/bitcoin-config.h"
 #include "chainparams.h"
 #include "base58.h"
+#include "utilstrencodings.h"
 
 int main(int argc, char **argv)
 {
@@ -45,6 +49,8 @@ int main(int argc, char **argv)
 	libzcash::SpendingKey k(uv2);
 	CZCSpendingKey ck(k);
 	printf("sk: %s\n", ck.ToString().c_str());
+	auto vk = k.viewing_key();
+	printf("vk: %s\n", vk.ToString().c_str());
 	CZCPaymentAddress pa = k.address();
 	printf("pa: %s\n", pa.ToString().c_str());
 
