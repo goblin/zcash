@@ -24,14 +24,15 @@ public:
 static void try_decrypt_one(const CTransaction &tx,
 		const JSDescription &js, 
 		const ZCNoteDecryption::Ciphertext &ct, 
-		const ZCNoteDecryption &decryptor)
+		const ZCNoteDecryption &decryptor,
+		unsigned char nonce)
 {
 	static const auto zcparams = ZCJoinSplit::Unopened();
 
 	try {
 		auto hsig = js.h_sig(*zcparams, tx.joinSplitPubKey);
 		auto npt = libzcash::NotePlaintext::decrypt(decryptor, ct,
-				js.ephemeralKey, hsig, 0);
+				js.ephemeralKey, hsig, nonce);
 		LaxDecryptor ld(decryptor);
 		printf("val=%lf vk=%s txid=%s rho=%s memo=%s\n", 
 				npt.value/100000000.0,
@@ -47,10 +48,12 @@ static void try_decrypt_one(const CTransaction &tx,
 static void try_decrypt(const CTransaction &tx, const decryptors_t &decs)
 {
 	for(auto js : tx.vjoinsplit) {
+		int i = 0;
 		for(auto ct : js.ciphertexts) {
 			for(auto dec : decs) {
-				try_decrypt_one(tx, js, ct, dec);
+				try_decrypt_one(tx, js, ct, dec, i);
 			}
+			i++;
 		}
 	}
 }
